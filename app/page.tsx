@@ -17,7 +17,7 @@ export default async function Home() {
 
   // 2. LIMPIEZA TOTAL: Extraemos SOLO los datos que la tarjeta necesita. 
   // Así dejamos botados los otros Decimales (costo, margen) en el servidor.
-  const productosLimpios = productosRaw.map(producto => ({
+  const productosLimpios = productosRaw.map((producto: any) => ({
     id: producto.id,
     nombre: producto.nombre,
     categoria_id: producto.categoria_id,
