@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model categorias {
+  id        String      @id // Antes era Int
+  nombre    String      @db.VarChar(50)
+}
+
+model comercios {
+  id        String   @id // Antes era Int
+  nombre    String      @db.VarChar(100)
+  activo    Boolean?    @default(true)
+}
+
+model configuracion_tasa {
+  id                   Int       @id @default(autoincrement())
+  tasa_ves_por_usd     Decimal   @db.Decimal(13, 2)
+  ultima_actualizacion DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model ordenes {
+  id                String    @id // Antes era Int
+  cliente_nombre    String?   @db.VarChar(100)
+  cliente_telefono  String?   @db.VarChar(20)
+  direccion_entrega String?
+  total_productos   Decimal?  @db.Decimal(10, 2)
+  costo_delivery    Decimal?  @db.Decimal(10, 2)
+  estatus           String?   @default("Pendiente") @db.VarChar(20)
+  creado_en         DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model productos {
+  id                String    @id // Antes era Int
+  comercio_id       String     
+  categoria_id      String     
+  nombre            String      @db.VarChar(150)
+  descripcion       String?
+  imagen_url        String?
+  precio_costo_usd  Decimal     @db.Decimal(10, 2)
+  porcentaje_margen Decimal?    @default(10.00) @db.Decimal(5, 2)
+  precio_venta_usd  Decimal?    @db.Decimal(10, 2)
+  stock_disponible  Int?        @default(0)
+  esta_disponible   Boolean?    @default(true)
+  es_oferta         Boolean  @default(false) // NUEVA COLUMNA
+  creado_en         DateTime?   @default(now()) @db.Timestamp(6)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model test {
+  id     String?
+  nombre String?
+
+  @@ignore
+}

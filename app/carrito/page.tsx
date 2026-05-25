@@ -10,24 +10,13 @@ export default async function Home() {
   });
   const tasa = tasaData?.tasa_ves_por_usd ? Number(tasaData.tasa_ves_por_usd) : 1;
 
-  // 1. Traemos los productos crudos de Prisma
-  const productosRaw = await prisma.productos.findMany({
+  const productos = await prisma.productos.findMany({
     where: { esta_disponible: true }
   });
 
-  // 2. LIMPIEZA TOTAL: Extraemos SOLO los datos que la tarjeta necesita. 
-  // Así dejamos botados los otros Decimales (costo, margen) en el servidor.
-  const productosLimpios = productosRaw.map(producto => ({
-    id: producto.id,
-    nombre: producto.nombre,
-    categoria_id: producto.categoria_id,
-    imagen_url: producto.imagen_url,
-    precio_venta_usd: Number(producto.precio_venta_usd),
-    es_oferta: producto.es_oferta // NUEVO: Pasamos el dato al cliente
-  }));
-
   return (
     <main className="min-h-screen bg-gray-50 pb-24">
+      {/* Navbar Superior */}
       <nav className="bg-blue-700 text-white p-4 sticky top-0 z-50 shadow-md">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-black tracking-tighter italic">MERCABARI</h1>
@@ -37,6 +26,7 @@ export default async function Home() {
         </div>
       </nav>
 
+      {/* Banner Hero */}
       <div className="bg-gradient-to-b from-blue-700 to-blue-500 pt-8 pb-16 px-4 shadow-inner">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-3 tracking-tight">
@@ -48,8 +38,8 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* 3. Le pasamos la lista estrictamente limpia a nuestro componente */}
-      <Storefront productos={productosLimpios} tasa={tasa} />
+      {/* Aquí llamamos a nuestro nuevo componente interactivo */}
+      <Storefront productos={productos} tasa={tasa} />
 
       <FloatingCart />
     </main>
