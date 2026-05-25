@@ -33,7 +33,7 @@ export default function CartClient() {
     const mensajeCodificado = encodeURIComponent(mensaje);
     
     // Recuerda cambiar esto por tu número real
-    const numeroWhatsApp = "584000000000"; 
+    const numeroWhatsApp = "584126386248"; 
     
     window.open(`https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`, "_blank");
     
